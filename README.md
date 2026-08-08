@@ -114,7 +114,7 @@ Using the paper's training split and settings, the paper reports **3,924 additio
 
 The [UCF-EL-GDI Hugging Face dataset](https://huggingface.co/datasets/mueez-overflow/UCF-EL-GDI/) contains generated images produced from the **full original dataset**, including source images from both the training and test partitions.
 
-This release is intentionally broader than the augmentation set used in the paper so that the generated images are available as a reusable research resource. When reproducing the paper's experiments, generated images derived from the test partition should **not** be added to the training data or used as replacements for the original evaluation images.
+This release is intentionally broader than the augmentation set used in the paper so that the generated images are available as a reusable research resource.
 
 ## Requirements
 
