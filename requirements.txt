@@ -1,0 +1,8 @@
+# Direct dependencies used by generate_gdi.py.
+# Inpaint-Anything has additional upstream dependencies; follow its setup first.
+numpy
+pandas
+opencv-python
+Pillow
+tqdm
+torch
