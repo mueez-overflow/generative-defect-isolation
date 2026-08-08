@@ -1,7 +1,7 @@
 # Generative Defect Isolation (GDI)
 
-<p align="left">
-  <img src="assets/graphical_abstract.png" alt="Graphical abstract for Generative Defect Isolation" width="75%">
+<p align="center">
+  <img src="assets/graphical_abstract.png" alt="Graphical abstract for Generative Defect Isolation" width="100%">
 </p>
 
 This repository accompanies the paper:
@@ -26,8 +26,8 @@ The resulting augmented training dataset contains both the original multi-defect
 
 ## Results
 
-<p align="left">
-  <img src="assets/model_comparisons.png" alt="Performance comparison of baseline and GDI models across three architectures and six training-data splits" width="75%">
+<p align="center">
+  <img src="assets/model_comparisons.png" alt="Performance comparison of baseline and GDI models across three architectures and six training-data splits" width="100%">
 </p>
 
 **Performance comparison of the baseline and GDI models across three architectures for the six different training splits: 1%, 5%, 10%, 20%, 50%, 100%.** The top image in each column shows Zero-One Accuracy and the bottom image shows Macro F1 Score.
@@ -43,8 +43,8 @@ The overall trend shows that GDI is particularly useful when training data are l
 
 ## GDI examples
 
-<p align="left">
-  <img src="assets/M0393C003000_gdi_summary.png" alt="Visual examples of the Generative Defect Isolation pipeline" width="75%">
+<p align="center">
+  <img src="assets/M0393C003000_gdi_summary.png" alt="Visual examples of the Generative Defect Isolation pipeline" width="100%">
 </p>
 
 **Visual example of the Generative Defect Isolation (GDI) pipeline.** The source image has four defects, but only two of them (`Contact_NearSolderPad` and `Crack_Resistive`) exceed the preset area threshold. GDI therefore generates isolated samples for those two classes together with a defect-free image.
@@ -64,8 +64,8 @@ For each source image containing **more than one unique defect type**, GDI perfo
 
 The paper uses LaMa because its Fast Fourier Convolution components are well suited to reconstructing long-range and periodic structures such as PV-cell grid lines and busbars.
 
-<p align="left">
-  <img src="assets/lama_inpainting.png" alt="LaMa inpainting workflow used by GDI" width="75%">
+<p align="center">
+  <img src="assets/lama_inpainting.png" alt="LaMa inpainting workflow used by GDI" width="100%">
 </p>
 
 ## GDI parameters
