@@ -15,12 +15,12 @@ When visualization output is enabled, the script writes one composite image for
 every processed multi-defect source image. The composite is organized by rows:
 
 - first row: original source image, original image with all annotated defects
-  outlined in class-specific colors, and an external legend. The legend reports
-  each class, its annotated area percentage, and whether it is above or at/below
+  outlined in class-specific colors and an external legend. The legend reports
+  each class, its annotated area percentage and whether it is above or at/below
   the configured isolation threshold;
 - subsequent rows: only classes for which an isolated GDI image was actually
   generated. Each row contains the generated image, the generated image with the
-  preserved defect class highlighted, and the class name; and
+  preserved defect class highlighted and the class name; and
 - when at least one isolated-defect sample was generated, a final ``No_Defect``
   row containing only the generated defect-free image.
 
@@ -77,7 +77,7 @@ ANNOTATED_DEFECT_CLASSES = [c for c in DEFECT_CLASSES if c != "No_Defect"]
 # -----------------------------------------------------------------------------
 
 # Controls annotation-outline thickness in composite visualizations.
-VIZ_BOUNDARY_THICKNESS = 2
+VIZ_BOUNDARY_THICKNESS = 1
 
 VIZ_IMAGE_HEIGHT = 700
 VIZ_PANEL_MIN_WIDTH = 560
@@ -543,7 +543,7 @@ def _make_defect_legend_panel(
     area_threshold: float,
     panel_width: int,
 ) -> np.ndarray:
-    """Create the first-row legend with class color, area, and threshold status."""
+    """Create the first-row legend with class color, area and threshold status."""
     tile_height = VIZ_IMAGE_HEIGHT + VIZ_CAPTION_HEIGHT
     panel = np.full(
         (tile_height, panel_width, 3),

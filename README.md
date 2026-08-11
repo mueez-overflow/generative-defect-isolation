@@ -1,90 +1,114 @@
 # Generative Defect Isolation (GDI)
 
-<p align="center">
-  <img src="assets/graphical_abstract.png" alt="Graphical abstract for Generative Defect Isolation" width="100%">
+<p align="left">
+  <img src="assets/graphical_abstract.png" alt="Graphical abstract for Generative Defect Isolation" width="75%">
 </p>
 
 This repository accompanies the paper:
 
 > **A Generative Approach for Improving Multi-Label Defect Classification in Photovoltaic Modules**  
 > A. Mueez, Y. S. Rawat, S. Vyas — *Solar Energy* (2026)  
-> [ScienceDirect article](https://www.sciencedirect.com/science/article/pii/S0038092X26006328) · [DOI](https://doi.org/10.1016/j.solener.2026.114943)
+> [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0038092X26006328) · [DOI](https://doi.org/10.1016/j.solener.2026.114943)
 
-**Generated dataset:** [UCF-EL-GDI on Hugging Face](https://huggingface.co/datasets/mueez-overflow/UCF-EL-GDI/)
+### Data and reproducibility
 
-Generative Defect Isolation (GDI) is an annotation-guided augmentation method for electroluminescence (EL) images of photovoltaic (PV) cells. Starting from a real image containing multiple co-occurring defects, GDI uses pixel-level defect annotations and **LaMa inpainting** to remove selected defects. This creates new samples containing an isolated defect while preserving the real visual context of the original PV cell. GDI can also remove all annotated defects from a source image to generate a `No_Defect` sample.
+- **Exact data used in the paper:** [Google Drive — train/test split](https://drive.google.com/drive/folders/1Grwl55IqPvrFaZK4f7tlIi9u8ymuQO53?usp=sharing)  
+  The training split contains the original training images together with GDI-generated images; the test split contains **original images only**.
+- **Generated-data release:** [UCF-EL-GDI on Hugging Face](https://huggingface.co/datasets/mueez-overflow/UCF-EL-GDI/)  
+  This release contains GDI-generated images from source images in **both curated train and test partitions used in this work**. The source dataset was curated before splitting, including removal of problematic images, so this is not a generation over every image in the original upstream UCF-EL-Defect release.
+- **Original dataset:** [ucf-photovoltaics/UCF-EL-Defect](https://github.com/ucf-photovoltaics/UCF-EL-Defect)
 
-The Hugging Face release contains GDI-generated images produced from the **full UCF-EL-Defect dataset**, including source images belonging to both the training and test partitions. This broader release is provided to make the generated data available for reuse and further analysis. For the experiments reported in the paper, however, GDI was applied **only to the training split**; the test split remained original and unaugmented.
+Generative Defect Isolation (GDI) is an annotation-guided augmentation method for electroluminescence (EL) images of photovoltaic (PV) cells. Starting from a real image containing multiple co-occurring defects, GDI uses pixel-level defect annotations and **LaMa inpainting** to remove selected defects. This produces samples containing an isolated target defect while preserving the visual context of the original PV cell. GDI can also remove all annotated defects to generate a `No_Defect` sample.
 
 ## Paper overview
 
-Multi-label defect classification is challenging because multiple PV defects can appear in the same EL image. When defect types co-occur, the visual features associated with individual labels can become difficult for a model to disentangle, particularly for rare classes with few training examples.
+Multi-label defect classification is difficult because multiple PV defects can occur in the same EL image. Co-occurring defects can make it harder for a classifier to associate specific visual features with individual labels, especially for rare classes.
 
-The paper uses the publicly available **UCF-EL-Defect** dataset, which provides pixel-level segmentation annotations for PV-cell defects. GDI repurposes these annotations for data augmentation: rather than synthesizing an entire image from scratch, it selectively removes annotated defects from a real image using neural inpainting.
+The paper repurposes the segmentation annotations in UCF-EL-Defect for data augmentation. Rather than synthesizing complete EL images from noise, GDI selectively removes annotated defects from real images using neural inpainting. The resulting training data combine the original multi-defect images with generated samples containing simplified defect compositions.
 
-The resulting augmented training dataset contains both the original multi-defect images and generated samples with simplified defect compositions. The method was evaluated with **ViT-S**, **ViT-L**, and **EfficientNetV2-L** over training subsets containing **1%, 5%, 10%, 20%, 50%, and 100%** of the available training data.
+The method was evaluated with **ViT-S**, **ViT-L** and **EfficientNetV2-L** using **1%, 5%, 10%, 20%, 50% and 100%** training-data settings.
 
 ## Results
 
-<p align="center">
-  <img src="assets/model_comparisons.png" alt="Performance comparison of baseline and GDI models across three architectures and six training-data splits" width="100%">
+<p align="left">
+  <img src="assets/model_comparisons.png" alt="Performance comparison of baseline and GDI models across three architectures and six training-data splits" width="75%">
 </p>
 
-**Performance comparison of the baseline and GDI models across three architectures for the six different training splits: 1%, 5%, 10%, 20%, 50%, 100%.** The top image in each column shows Zero-One Accuracy and the bottom image shows Macro F1 Score.
+**Performance comparison of baseline and GDI models across the 1%, 5%, 10%, 20%, 50% and 100% training splits.** The top row shows Zero-One Accuracy and the bottom row shows Macro F1 Score.
 
-Across the experiments, GDI generally improved both Zero-One Accuracy and Macro F1, with the largest relative gains occurring in data-scarce settings. Examples reported in the paper include:
+GDI generally improves both metrics, with the largest relative gains appearing in data-scarce settings. Results reported in the paper include:
 
-- **ViT-S:** +125.1% relative improvement in Zero-One Accuracy at the 10% training-data split and +20.3% in Macro F1 at the 1% split.
-- **ViT-L:** +129.0% relative improvement in Zero-One Accuracy at the 5% split and +9.8% in Macro F1 at the 1% split.
+- **ViT-S:** +125.1% relative Zero-One Accuracy improvement at the 10% split and +20.3% Macro F1 improvement at the 1% split.
+- **ViT-L:** +129.0% relative Zero-One Accuracy improvement at the 5% split and +9.8% Macro F1 improvement at the 1% split.
 - **EfficientNetV2-L:** the strongest full-data result, reaching **0.6046 Zero-One Accuracy** and **0.7744 Macro F1** with GDI.
-- Across the error co-occurrence analysis, the total number of co-occurring error pairs decreased from **1,774 to 1,312**, corresponding to a **26% reduction**.
+- Co-occurring error pairs decreased from **1,774 to 1,312**, a **26% reduction**.
 
-The overall trend shows that GDI is particularly useful when training data are limited, while still providing gains in higher-data settings.
+### Multi-seed robustness study
 
-## GDI examples
+The 20% experiment was repeated using seeds **24, 42, 67 and 76** and evaluated at a fixed decision threshold of `0.5`.
 
-<p align="center">
-  <img src="assets/M0393C003000_gdi_summary.png" alt="Visual examples of the Generative Defect Isolation pipeline" width="100%">
+| Architecture | Method | Accuracy (mean ± std) | Macro F1 (mean ± std) |
+|---|---|---:|---:|
+| EfficientNetV2-L | Baseline | 0.3439 ± 0.0072 | 0.5743 ± 0.0168 |
+| EfficientNetV2-L | **GDI** | **0.3872 ± 0.0318** | **0.6006 ± 0.0057** |
+| ViT-S | Baseline | 0.3467 ± 0.0123 | 0.5710 ± 0.0057 |
+| ViT-S | **GDI** | **0.3883 ± 0.0111** | **0.5965 ± 0.0119** |
+| ViT-L | Baseline | 0.3083 ± 0.0196 | 0.5430 ± 0.0199 |
+| ViT-L | **GDI** | **0.3379 ± 0.0217** | **0.5572 ± 0.0140** |
+
+Across the 12 paired architecture/seed comparisons, GDI improved Zero-One Accuracy in **11/12** runs and Macro F1 in **10/12** runs.
+
+The refactored reproduction code is in [`experiments/multiseed/`](experiments/multiseed/). It preserves the experimental training, checkpoint-selection, data-sampling and fixed-threshold evaluation behavior while replacing machine-specific paths with command-line arguments.
+
+## GDI example
+
+<p align="left">
+  <img src="assets/M0393C003000_gdi_summary.png" alt="Visual example of the Generative Defect Isolation pipeline" width="75%">
 </p>
 
-**Visual example of the Generative Defect Isolation (GDI) pipeline.** The source image has four defects, but only two of them (`Contact_NearSolderPad` and `Crack_Resistive`) exceed the preset area threshold. GDI therefore generates isolated samples for those two classes together with a defect-free image.
+The source image above contains four annotated defect classes. Only `Contact_NearSolderPad` and `Crack_Resistive` exceed the configured area threshold, so isolated samples are generated for those classes together with a `No_Defect` image.
 
 ## GDI workflow
 
-For each source image containing **more than one unique defect type**, GDI performs the following steps:
+<p align="left">
+  <img src="assets/gdi_pipeline.png" alt="Generative Defect Isolation workflow" width="90%">
+</p>
 
-1. Compute the annotated area occupied by each defect class.
-2. Select a target defect for isolation when its total annotated area is above the configured area threshold.
-3. Create a binary mask covering all annotated defects **except** the target defect.
-4. Dilate the mask to provide a buffer around defect boundaries.
-5. Inpaint the masked regions with LaMa, producing a sample in which the target defect remains while the other annotated defects are removed.
-6. Repeat the process for each eligible target defect in the source image.
-7. In this implementation, if the source image produced at least one isolated-defect sample, create a combined mask containing **all** annotated defects and inpaint it to generate one `No_Defect` sample.
-8. Save the generated images together with their labels and provenance information.
+For each source image containing **more than one unique defect type**, GDI:
+
+1. computes the annotated area occupied by each defect class;
+2. checks each unique defect against the configured area threshold;
+3. for an eligible target defect, creates a binary mask covering all annotated defects **except** the target;
+4. dilates the mask to provide a buffer around annotation boundaries;
+5. inpaints the masked regions with LaMa, leaving the target defect in its original context;
+6. repeats the process for every eligible target defect; and
+7. if at least one defect was isolated, creates a combined mask of all defects and inpaints it to produce one `No_Defect` sample.
+
+### LaMa inpainting
+
+<p align="left">
+  <img src="assets/lama_inpainting.png" alt="LaMa inpainting workflow used by GDI" width="75%">
+</p>
 
 The paper uses LaMa because its Fast Fourier Convolution components are well suited to reconstructing long-range and periodic structures such as PV-cell grid lines and busbars.
 
-<p align="center">
-  <img src="assets/lama_inpainting.png" alt="LaMa inpainting workflow used by GDI" width="100%">
-</p>
-
 ## GDI parameters
 
-The two main GDI preprocessing parameters are configurable in this implementation.
+The two main preprocessing parameters are configurable.
 
 | Parameter | CLI argument | Setting used in the paper | Description |
 |---|---|---:|---|
 | Defect area threshold | `--area-threshold` | **10%** | A target defect is isolated only when its annotated area is **strictly greater than** this percentage of the image. |
-| Mask dilation kernel | `--dilate-kernel-size` | **15** | Side length of the square dilation kernel applied to the inpainting mask. The paper used **15 × 15**. |
+| Mask dilation kernel | `--dilate-kernel-size` | **15** | Side length of the square dilation kernel applied before inpainting. The paper used **15 × 15**. |
 
-The defaults match the settings reported in the paper:
+The defaults match the paper:
 
 ```bash
 --area-threshold 10 \
 --dilate-kernel-size 15
 ```
 
-Both values can be changed. For example:
+Both can be changed, for example:
 
 ```bash
 python generate_gdi.py \
@@ -93,28 +117,27 @@ python generate_gdi.py \
   --dilate-kernel-size 21
 ```
 
-This would isolate target defects covering more than 5% of the image and use a 21 × 21 dilation kernel.
+## Data releases and experimental split
 
-## Dataset preparation
+Problematic source images were removed before the curated data were split for the work. The paper experiments then use an **80:20 training/test split**.
 
-For the experiments reported in the paper, the original UCF-EL-Defect source images were first partitioned into an **80:20 training/test split**. GDI was then applied **only to the training set**, while the test set remained composed entirely of original, unaugmented images.
+For the published experiments:
 
-Within GDI:
-
-- images containing zero or one unique defect type are not processed for defect isolation;
-- a target defect is isolated only when its annotated area exceeds the configured threshold;
-- classes at or below the threshold are not generated as isolated samples; and
-- in this repository implementation, a `No_Defect` image is generated only when the source image produced at least one eligible isolated-defect sample. If every class in a multi-defect source is at or below the threshold, the source produces no synthetic image.
-
-The published paper describes generating `No_Defect` after the defect-isolation loop for multi-defect images, but it does not explicitly discuss the edge case in which **none** of the defect classes pass the area threshold. The conditional rule above makes that edge case explicit in this implementation.
+- GDI-generated samples are added to the **training** data;
+- the **test** data remain original and unaugmented;
+- images with zero or one unique defect type are not processed for defect isolation;
+- a target defect is generated only when its annotated area exceeds the configured threshold; and
+- in this implementation, a `No_Defect` image is produced only when at least one isolated-defect sample was generated from that source.
 
 Using the paper's training split and settings, the paper reports **3,924 additional training samples**, including **1,752 `No_Defect` samples**.
 
-### Public full-dataset release
+The two public data resources serve different purposes:
 
-The [UCF-EL-GDI Hugging Face dataset](https://huggingface.co/datasets/mueez-overflow/UCF-EL-GDI/) contains generated images produced from the **full original dataset**, including source images from both the training and test partitions.
+**Google Drive — exact experiment data.**  
+Use the [Google Drive split](https://drive.google.com/drive/folders/1Grwl55IqPvrFaZK4f7tlIi9u8ymuQO53?usp=sharing) when reproducing the paper. Its training split contains original + generated images, while its test split contains original images only.
 
-This release is intentionally broader than the augmentation set used in the paper so that the generated images are available as a reusable research resource.
+**Hugging Face — generated-data release.**  
+[UCF-EL-GDI](https://huggingface.co/datasets/mueez-overflow/UCF-EL-GDI/) contains generated images derived from source images in both curated train and test partitions. This makes the synthetic outputs available as a broader research resource. **Do not mix generated images derived from the test partition into training when reproducing the paper's results.**
 
 ## Requirements
 
@@ -124,7 +147,7 @@ Download the original UCF-EL-Defect dataset and its VGG Image Annotator (VIA) an
 
 https://github.com/ucf-photovoltaics/UCF-EL-Defect
 
-The generator expects a VIA annotation CSV containing at least the following columns:
+The generator expects a VIA annotation CSV containing at least:
 
 | Column | Description |
 |---|---|
@@ -132,15 +155,15 @@ The generator expects a VIA annotation CSV containing at least the following col
 | `region_shape_attributes` | VIA JSON describing the annotation geometry |
 | `region_attributes` | VIA JSON containing `Defect_Class` |
 
-Supported annotation geometries are `rect`, `polygon`, `circle`, and `ellipse`.
+Supported annotation geometries are `rect`, `polygon`, `circle` and `ellipse`.
 
 ### Inpaint-Anything / LaMa
 
-The paper uses the LaMa implementation provided by **Inpaint-Anything**:
+The GDI generator uses the LaMa implementation provided by **Inpaint-Anything**:
 
 https://github.com/geekyutao/Inpaint-Anything
 
-Clone Inpaint-Anything, follow its installation instructions, and download the `big-lama` checkpoint.
+Clone Inpaint-Anything, follow its installation instructions and download the `big-lama` checkpoint.
 
 A convenient directory layout is:
 
@@ -156,7 +179,7 @@ workspace/
     └── <source-image-directory>/
 ```
 
-Install the dependencies used directly by the GDI generator:
+Install the repository dependencies:
 
 ```bash
 cd generative-defect-isolation
@@ -164,8 +187,6 @@ pip install -r requirements.txt
 ```
 
 ## Generate GDI samples
-
-Run:
 
 ```bash
 python generate_gdi.py \
@@ -186,42 +207,31 @@ An editable example is provided in [`examples/run_gdi.sh`](examples/run_gdi.sh).
 
 ### Visualizations
 
-To save GDI visualizations, add:
+To save source-level GDI visualizations, add:
 
 ```bash
 --visualizations-dir ./gdi_visualizations
 ```
 
-The script creates **one composite visualization per multi-defect source image**.
+The script creates one composite visualization per multi-defect source image.
 
-The **first row** contains three panels:
+The first row contains:
 
 1. the original EL image;
-2. the original image with **all annotated defects highlighted in different class-specific colors**; and
-3. a legend mapping those colors to the defect classes present in the source image.
+2. the original image with all annotated defects highlighted in class-specific colors; and
+3. a legend showing each class, its annotated area percentage and its threshold status.
 
-The legend also reports the **annotated area percentage for every defect class** and whether that class is above or at/below the configured generation threshold.
+Subsequent rows contain **only generated samples**. Each eligible isolated-defect class gets a row with the generated image, the generated image with the preserved defect highlighted and the class name. `No_Defect` is shown once because there is no remaining defect to highlight.
 
-From the **second row onward, the visualization contains only images that were actually generated by GDI**. Each eligible isolated-defect class gets one row containing:
+Only visualization copies are resized. The generated GDI images themselves retain their native resolution.
 
-1. the generated isolated-defect image;
-2. the same generated image with the preserved defect region(s) highlighted; and
-3. the defect class name.
+The visualization boundary thickness is controlled by:
 
-If several annotated regions belong to the preserved class, all of those regions are highlighted. The highlight color is the same color used for that class in the first-row legend.
-
-A `No_Defect` row is added only if at least one isolated-defect class was generated from that source. It contains only the generated `No_Defect` image because there is nothing left to highlight.
-
-Only visualization copies are resized. The generated GDI images saved under the output directory retain their native resolution.
-
-The visualization directory is flat, with one summary image per processed source:
-
-```text
-gdi_visualizations/
-├── <source-image-1>_gdi_summary.png
-├── <source-image-2>_gdi_summary.png
-└── ...
+```python
+VIZ_BOUNDARY_THICKNESS = 1
 ```
+
+This affects visualization outlines only, not the masks used for inpainting.
 
 ## Output
 
@@ -247,56 +257,17 @@ generated_gdi/
 └── generation_stats.json
 ```
 
-### `inpainted_single_label_images.csv`
-
-Contains one-hot labels for every generated image. The `filename` field stores the image path relative to the output directory.
-
-### `gdi_manifest.csv`
-
-Stores the provenance of every generated sample.
-
-| Column | Meaning |
-|---|---|
-| `filename` | Generated image path relative to the output directory |
-| `source_filename` | Original EL image |
-| `label` | Label assigned to the generated image |
-| `generation_type` | `isolated_defect` or `all_defects_removed` |
-| `target_area_percent` | Preserved target area for isolated-defect images |
-| `source_unique_defects` | Number of unique annotated defect types in the source image |
-
-### `defect_areas.csv`
-
-Stores each annotated class's percentage area for the multi-defect source images processed by GDI. Areas are calculated **before mask dilation**.
-
-### `generation_stats.json`
-
-Stores a machine-readable summary of the completed run, including:
-
-- the area threshold and dilation kernel used;
-- the number of source images with zero, one, or multiple unique defects;
-- the number of target defects that passed or failed the area threshold;
-- the number of isolated-defect and `No_Defect` images generated;
-- isolated-defect generation counts by class;
-- the number of source-level composite visualizations and total visualization panels, when enabled; and
-- total runtime and average runtime per processed multi-defect source image.
-
-The same statistics are printed to the terminal at the end of the run.
-
-
-
-## Links
-
-- **Generated dataset:** [UCF-EL-GDI on Hugging Face](https://huggingface.co/datasets/mueez-overflow/UCF-EL-GDI/)
-- **Paper:** [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0038092X26006328) · [DOI](https://doi.org/10.1016/j.solener.2026.114943)
-- **Original dataset:** [ucf-photovoltaics/UCF-EL-Defect](https://github.com/ucf-photovoltaics/UCF-EL-Defect)
-- **Inpaint-Anything:** [geekyutao/Inpaint-Anything](https://github.com/geekyutao/Inpaint-Anything)
+- `inpainted_single_label_images.csv` contains one-hot labels for the generated images.
+- `gdi_manifest.csv` stores source-image provenance and generation type.
+- `defect_areas.csv` stores pre-dilation annotated area percentages.
+- `generation_stats.json` stores run parameters and generation statistics.
 
 ## Citation
 
-If you use **GDI (Generative Defect Isolation)**, the generated synthetic data, or any part of this work, please cite:
+If you use **GDI**, the generated synthetic data, or any part of this work, please cite:
 
 ```bibtex
-@article{mueez2026gdi,
+@article{mueez2026generative,
   title={A Generative Approach for Improving Multi-Label Defect Classification in Photovoltaic Modules},
   author={Mueez, Abdul and Rawat, Yogesh S. and Vyas, Shruti},
   journal={Solar Energy},

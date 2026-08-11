@@ -1,8 +1,13 @@
-# Direct dependencies used by generate_gdi.py.
-# Inpaint-Anything has additional upstream dependencies; follow its setup first.
+# GDI generation
 numpy
 pandas
 opencv-python
 Pillow
 tqdm
 torch
+
+# Multi-seed robustness experiment
+torchvision
+timm
+transformers
+scikit-learn
