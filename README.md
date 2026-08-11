@@ -8,7 +8,7 @@ This repository accompanies the paper:
 
 > **A Generative Approach for Improving Multi-Label Defect Classification in Photovoltaic Modules**  
 > A. Mueez, Y. S. Rawat, S. Vyas — **Solar Energy** (2026)  
-> [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0038092X26006328) · [DOI](https://doi.org/10.1016/j.solener.2026.114943)
+> [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0038092X26006328) · [arXiv - Pending]
 
 ### Data and reproducibility
 
