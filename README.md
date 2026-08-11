@@ -48,7 +48,7 @@ GDI generally improves both metrics, with the largest relative gains appearing i
 
 ### Multi-seed robustness study
 
-The 20% experiment was repeated using seeds **24, 42, 67 and 76** and evaluated at a fixed decision threshold of `0.5`.
+To assess whether the observed GDI gains were robust to random initialization and data sampling, we repeated the 20% training-data setting across four seeds. Experiments used seeds 24, 42, 67 and 76 and were evaluated at a fixed decision threshold of `0.5`.
 
 | Architecture | Method | Accuracy (mean ± std) | Macro F1 (mean ± std) |
 |---|---|---:|---:|
@@ -245,13 +245,6 @@ Subsequent rows contain **only generated samples**. Each eligible isolated-defec
 
 Only visualization copies are resized. The generated GDI images themselves retain their native resolution.
 
-The visualization boundary thickness is controlled by:
-
-```python
-VIZ_BOUNDARY_THICKNESS = 1
-```
-
-This affects visualization outlines only, not the masks used for inpainting.
 
 ## Output
 
