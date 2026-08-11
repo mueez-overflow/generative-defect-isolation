@@ -1,7 +1,7 @@
 # Generative Defect Isolation (GDI)
 
 <p align="center">
-  <img src="assets/graphical_abstract.png" alt="Graphical abstract for Generative Defect Isolation" width="100%">
+  <img src="assets/graphical_abstract.jpg" alt="Graphical abstract for Generative Defect Isolation" width="100%">
 </p>
 
 This repository accompanies the paper:
@@ -61,7 +61,7 @@ The 20% experiment was repeated using seeds **24, 42, 67 and 76** and evaluated 
 
 Across the 12 paired architecture/seed comparisons, GDI improved Zero-One Accuracy in **11/12** runs and Macro F1 in **10/12** runs.
 
-The refactored reproduction code is in [`experiments/multiseed/`](experiments/multiseed/). It preserves the experimental training, checkpoint-selection, data-sampling and fixed-threshold evaluation behavior while replacing machine-specific paths with command-line arguments.
+The multi-seed experiment code used for the robustness study is available in [`experiments/multiseed/`](experiments/multiseed/).
 
 ## GDI example
 
@@ -74,7 +74,7 @@ The source image above contains four annotated defect classes. Only `Contact_Nea
 ## GDI workflow
 
 <p align="center">
-  <img src="assets/gdi_pipeline.png" alt="Generative Defect Isolation workflow" width="100%">
+  <img src="assets/gdi_pipeline.jpg" alt="Generative Defect Isolation workflow" width="100%">
 </p>
 
 For each source image containing **more than one unique defect type**, GDI:
@@ -90,7 +90,7 @@ For each source image containing **more than one unique defect type**, GDI:
 ### LaMa inpainting
 
 <p align="center">
-  <img src="assets/lama_inpainting.png" alt="LaMa inpainting workflow used by GDI" width="100%">
+  <img src="assets/lama_inpainting.jpg" alt="LaMa inpainting workflow used by GDI" width="100%">
 </p>
 
 The paper uses LaMa because its Fast Fourier Convolution components are well suited to reconstructing long-range and periodic structures such as PV-cell grid lines and busbars.
