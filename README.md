@@ -1,24 +1,27 @@
 # Generative Defect Isolation (GDI)
 
-<p align="left">
-  <img src="assets/graphical_abstract.png" alt="Graphical abstract for Generative Defect Isolation" width="75%">
+<p align="center">
+  <img src="assets/graphical_abstract.png" alt="Graphical abstract for Generative Defect Isolation" width="100%">
 </p>
 
 This repository accompanies the paper:
 
 > **A Generative Approach for Improving Multi-Label Defect Classification in Photovoltaic Modules**  
-> A. Mueez, Y. S. Rawat, S. Vyas — *Solar Energy* (2026)  
+> A. Mueez, Y. S. Rawat, S. Vyas — **Solar Energy** (2026)  
 > [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0038092X26006328) · [DOI](https://doi.org/10.1016/j.solener.2026.114943)
 
 ### Data and reproducibility
 
+To support both **exact reproducibility** and **broader research reuse**, we provide two complementary data resources. The exact experiment split preserves the train/test setup used in the paper, while the generated-data release makes GDI outputs from both train and test source partitions available as a standalone resource for future work on synthetic-data augmentation, defect classification and photovoltaic EL analysis.
+
 - **Exact data used in the paper:** [Google Drive — train/test split](https://drive.google.com/drive/folders/1Grwl55IqPvrFaZK4f7tlIi9u8ymuQO53?usp=sharing)  
   The training split contains the original training images together with GDI-generated images; the test split contains **original images only**.
 - **Generated-data release:** [UCF-EL-GDI on Hugging Face](https://huggingface.co/datasets/mueez-overflow/UCF-EL-GDI/)  
-  This release contains GDI-generated images from source images in **both curated train and test partitions used in this work**. The source dataset was curated before splitting, including removal of problematic images, so this is not a generation over every image in the original upstream UCF-EL-Defect release.
+  This release contains GDI-generated images derived from source images in **both the train and test partitions used in this work**.
 - **Original dataset:** [ucf-photovoltaics/UCF-EL-Defect](https://github.com/ucf-photovoltaics/UCF-EL-Defect)
 
 Generative Defect Isolation (GDI) is an annotation-guided augmentation method for electroluminescence (EL) images of photovoltaic (PV) cells. Starting from a real image containing multiple co-occurring defects, GDI uses pixel-level defect annotations and **LaMa inpainting** to remove selected defects. This produces samples containing an isolated target defect while preserving the visual context of the original PV cell. GDI can also remove all annotated defects to generate a `No_Defect` sample.
+
 
 ## Paper overview
 
@@ -30,8 +33,8 @@ The method was evaluated with **ViT-S**, **ViT-L** and **EfficientNetV2-L** usin
 
 ## Results
 
-<p align="left">
-  <img src="assets/model_comparisons.png" alt="Performance comparison of baseline and GDI models across three architectures and six training-data splits" width="75%">
+<p align="center">
+  <img src="assets/model_comparisons.png" alt="Performance comparison of baseline and GDI models across three architectures and six training-data splits" width="100%">
 </p>
 
 **Performance comparison of baseline and GDI models across the 1%, 5%, 10%, 20%, 50% and 100% training splits.** The top row shows Zero-One Accuracy and the bottom row shows Macro F1 Score.
@@ -62,16 +65,16 @@ The refactored reproduction code is in [`experiments/multiseed/`](experiments/mu
 
 ## GDI example
 
-<p align="left">
-  <img src="assets/M0393C003000_gdi_summary.png" alt="Visual example of the Generative Defect Isolation pipeline" width="75%">
+<p align="center">
+  <img src="assets/M0393C003000_gdi_summary.png" alt="Visual example of the Generative Defect Isolation pipeline" width="100%">
 </p>
 
 The source image above contains four annotated defect classes. Only `Contact_NearSolderPad` and `Crack_Resistive` exceed the configured area threshold, so isolated samples are generated for those classes together with a `No_Defect` image.
 
 ## GDI workflow
 
-<p align="left">
-  <img src="assets/gdi_pipeline.png" alt="Generative Defect Isolation workflow" width="90%">
+<p align="center">
+  <img src="assets/gdi_pipeline.png" alt="Generative Defect Isolation workflow" width="100%">
 </p>
 
 For each source image containing **more than one unique defect type**, GDI:
@@ -86,8 +89,8 @@ For each source image containing **more than one unique defect type**, GDI:
 
 ### LaMa inpainting
 
-<p align="left">
-  <img src="assets/lama_inpainting.png" alt="LaMa inpainting workflow used by GDI" width="75%">
+<p align="center">
+  <img src="assets/lama_inpainting.png" alt="LaMa inpainting workflow used by GDI" width="100%">
 </p>
 
 The paper uses LaMa because its Fast Fourier Convolution components are well suited to reconstructing long-range and periodic structures such as PV-cell grid lines and busbars.
@@ -119,25 +122,18 @@ python generate_gdi.py \
 
 ## Data releases and experimental split
 
-Problematic source images were removed before the curated data were split for the work. The paper experiments then use an **80:20 training/test split**.
+The paper experiments use an **80:20 training/test split**.
 
 For the published experiments:
 
 - GDI-generated samples are added to the **training** data;
 - the **test** data remain original and unaugmented;
 - images with zero or one unique defect type are not processed for defect isolation;
-- a target defect is generated only when its annotated area exceeds the configured threshold; and
-- in this implementation, a `No_Defect` image is produced only when at least one isolated-defect sample was generated from that source.
+- a target defect is generated only when its annotated area exceeds the configured threshold;
+- a `No_Defect` image is produced only when at least one isolated-defect sample was generated from that source.
 
-Using the paper's training split and settings, the paper reports **3,924 additional training samples**, including **1,752 `No_Defect` samples**.
 
-The two public data resources serve different purposes:
-
-**Google Drive — exact experiment data.**  
-Use the [Google Drive split](https://drive.google.com/drive/folders/1Grwl55IqPvrFaZK4f7tlIi9u8ymuQO53?usp=sharing) when reproducing the paper. Its training split contains original + generated images, while its test split contains original images only.
-
-**Hugging Face — generated-data release.**  
-[UCF-EL-GDI](https://huggingface.co/datasets/mueez-overflow/UCF-EL-GDI/) contains generated images derived from source images in both curated train and test partitions. This makes the synthetic outputs available as a broader research resource. **Do not mix generated images derived from the test partition into training when reproducing the paper's results.**
+The two releases are complementary: the exact experimental split is intended for reproducing the published results, while the standalone generated-data release makes synthetic GDI outputs from both train and test source partitions available for broader research use. When reproducing the paper, generated images derived from the test partition should **not** be added to the training set.
 
 ## Requirements
 
@@ -159,27 +155,51 @@ Supported annotation geometries are `rect`, `polygon`, `circle` and `ellipse`.
 
 ### Inpaint-Anything / LaMa
 
-The GDI generator uses the LaMa implementation provided by **Inpaint-Anything**:
+The GDI generator uses the **LaMa inpainting integration** provided by [Inpaint-Anything](https://github.com/geekyutao/Inpaint-Anything).
 
-https://github.com/geekyutao/Inpaint-Anything
+Use the upstream **`main` branch**, since the current GDI generator expects the `lama_inpaint.py` module and LaMa directory structure provided there:
 
-Clone Inpaint-Anything, follow its installation instructions and download the `big-lama` checkpoint.
+```bash
+git clone --branch main https://github.com/geekyutao/Inpaint-Anything.git
+```
 
-A convenient directory layout is:
+GDI constructs its masks directly from the UCF-EL-Defect annotations, so a SAM checkpoint is **not required** for this pipeline. Only the LaMa inpainting components are used.
+
+Install the LaMa dependencies from the Inpaint-Anything repository:
+
+```bash
+cd Inpaint-Anything
+python -m pip install torch torchvision torchaudio
+python -m pip install -r lama/requirements.txt
+cd ..
+```
+
+The two LaMa paths used by `generate_gdi.py` come from different places:
+
+- **LaMa configuration:** `lama/configs/prediction/default.yaml` is included when you clone the Inpaint-Anything repository.
+- **LaMa checkpoint:** `pretrained_models/big-lama` is **not included in the Git clone**. Download the `big-lama` checkpoint using the links in the [Inpaint-Anything README](https://github.com/geekyutao/Inpaint-Anything#-remove-anything) and place it under `Inpaint-Anything/pretrained_models/big-lama/`.
+
+After downloading the checkpoint, a convenient directory layout is:
 
 ```text
 workspace/
 ├── Inpaint-Anything/
 │   ├── lama/
+│   │   └── configs/
+│   │       └── prediction/
+│   │           └── default.yaml
+│   ├── lama_inpaint.py
 │   └── pretrained_models/
 │       └── big-lama/
+│           ├── config.yaml
+│           └── models/
 ├── generative-defect-isolation/
 └── UCF-EL-Defect/
     ├── AnnotationsCombined.csv
     └── <source-image-directory>/
 ```
 
-Install the repository dependencies:
+Install the dependencies for this repository:
 
 ```bash
 cd generative-defect-isolation
@@ -267,7 +287,7 @@ generated_gdi/
 If you use **GDI**, the generated synthetic data, or any part of this work, please cite:
 
 ```bibtex
-@article{mueez2026generative,
+@article{mueez2026gdi,
   title={A Generative Approach for Improving Multi-Label Defect Classification in Photovoltaic Modules},
   author={Mueez, Abdul and Rawat, Yogesh S. and Vyas, Shruti},
   journal={Solar Energy},

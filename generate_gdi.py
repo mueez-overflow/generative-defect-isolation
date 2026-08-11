@@ -77,7 +77,7 @@ ANNOTATED_DEFECT_CLASSES = [c for c in DEFECT_CLASSES if c != "No_Defect"]
 # -----------------------------------------------------------------------------
 
 # Controls annotation-outline thickness in composite visualizations.
-VIZ_BOUNDARY_THICKNESS = 1
+VIZ_BOUNDARY_THICKNESS = 2
 
 VIZ_IMAGE_HEIGHT = 700
 VIZ_PANEL_MIN_WIDTH = 560
