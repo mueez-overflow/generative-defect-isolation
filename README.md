@@ -7,8 +7,8 @@
 This repository accompanies the paper:
 
 > **A Generative Approach for Improving Multi-Label Defect Classification in Photovoltaic Modules**  
-> A. Mueez, Y. S. Rawat, S. Vyas — **Solar Energy** (2026)  
-> [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0038092X26006328) · [arXiv - Pending]
+> A. Mueez, Y. S. Rawat, S. Vyas — *Solar Energy* (2026)  
+> [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0038092X26006328) · [arXiv](https://arxiv.org/pdf/2608.12725)
 
 ### Data and reproducibility
 
@@ -37,14 +37,8 @@ The method was evaluated with **ViT-S**, **ViT-L** and **EfficientNetV2-L** usin
   <img src="assets/model_comparisons.png" alt="Performance comparison of baseline and GDI models across three architectures and six training-data splits" width="100%">
 </p>
 
-**Performance comparison of baseline and GDI models across the 1%, 5%, 10%, 20%, 50% and 100% training splits.** The top row shows Zero-One Accuracy and the bottom row shows Macro F1 Score.
 
-GDI generally improves both metrics, with the largest relative gains appearing in data-scarce settings. Results reported in the paper include:
-
-- **ViT-S:** +125.1% relative Zero-One Accuracy improvement at the 10% split and +20.3% Macro F1 improvement at the 1% split.
-- **ViT-L:** +129.0% relative Zero-One Accuracy improvement at the 5% split and +9.8% Macro F1 improvement at the 1% split.
-- **EfficientNetV2-L:** the strongest full-data result, reaching **0.6046 Zero-One Accuracy** and **0.7744 Macro F1** with GDI.
-- Co-occurring error pairs decreased from **1,774 to 1,312**, a **26% reduction**.
+GDI generally improves performance across architectures, with the largest gains in low-data settings.
 
 ### Multi-seed robustness study
 
@@ -73,19 +67,15 @@ The source image above contains four annotated defect classes. Only `Contact_Nea
 
 ## GDI workflow
 
-<p align="center">
-  <img src="assets/gdi_pipeline.jpg" alt="Generative Defect Isolation workflow" width="100%">
-</p>
-
 For each source image containing **more than one unique defect type**, GDI:
 
-1. computes the annotated area occupied by each defect class;
-2. checks each unique defect against the configured area threshold;
-3. for an eligible target defect, creates a binary mask covering all annotated defects **except** the target;
-4. dilates the mask to provide a buffer around annotation boundaries;
-5. inpaints the masked regions with LaMa, leaving the target defect in its original context;
-6. repeats the process for every eligible target defect; and
-7. if at least one defect was isolated, creates a combined mask of all defects and inpaints it to produce one `No_Defect` sample.
+1. Computes the annotated area occupied by each defect class
+2. Checks each unique defect against the configured area threshold
+3. For an eligible target defect, creates a binary mask covering all annotated defects **except** the target
+4. Dilates the mask to provide a buffer around annotation boundaries
+5. Inpaints the masked regions with LaMa, leaving the target defect in its original context;
+6. Repeats the process for every eligible target defect and
+7. If at least one defect was isolated, creates a combined mask of all defects and inpaints it to produce one `No_Defect` sample.
 
 ### LaMa inpainting
 
@@ -281,10 +271,13 @@ If you use **GDI**, the generated synthetic data, or any part of this work, plea
 
 ```bibtex
 @article{mueez2026gdi,
-  title={A Generative Approach for Improving Multi-Label Defect Classification in Photovoltaic Modules},
-  author={Mueez, Abdul and Rawat, Yogesh S. and Vyas, Shruti},
-  journal={Solar Energy},
-  year={2026},
-  doi={10.1016/j.solener.2026.114943}
+  title   = {A generative approach for improving multi-label defect classification in photovoltaic modules},
+  journal = {Solar Energy},
+  volume  = {317},
+  pages   = {114943},
+  year    = {2026},
+  issn    = {0038-092X},
+  doi     = {10.1016/j.solener.2026.114943},
+  author  = {Abdul Mueez and Yogesh S. Rawat and Shruti Vyas}
 }
 ```
