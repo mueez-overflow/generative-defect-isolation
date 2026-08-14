@@ -13,7 +13,7 @@ This repository accompanies the paper:
 
 ### Data and reproducibility
 
-To support both **broader research reuse** and **exact reproducibility**, we provide two complementary data resources. The generated-data release makes GDI outputs from both train and test source partitions available as a standalone resource for future work on synthetic-data augmentation, defect classification and photovoltaic EL analysis, while the exact experiment split preserves the train/test setup used in the paper.
+To support both **broader research reuse** and **exact reproducibility**, we provide two complementary data resources. The generated-data release makes GDI outputs from the source images available as a standalone resource for future work on synthetic-data augmentation, defect classification and photovoltaic EL analysis, while the exact experiment split preserves the train/test setup used in the paper.
 
 - **Generated-data release:** [UCF-EL-GDI on Hugging Face](https://huggingface.co/datasets/mueez-overflow/UCF-EL-GDI/)  
   This release contains **GDI-generated images** derived from source images in both the train and test partitions used in this work.
