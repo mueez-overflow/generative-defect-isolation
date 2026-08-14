@@ -123,13 +123,13 @@ For the published experiments:
 - a `No_Defect` image is produced only when at least one isolated-defect sample was generated from that source.
 
 
-The two releases are complementary: the exact experimental split is intended for reproducing the published results, while the standalone generated-data release makes synthetic GDI outputs from both train and test source partitions available for broader research use. When reproducing the paper, generated images derived from the test partition should **not** be added to the training set.
+The two releases are complementary: the exact experimental split is intended for reproducing the published results, while the standalone generated-data release makes synthetic GDI outputs from both train and test source partitions available for broader research use.
 
 ## Requirements
 
 ### UCF-EL-Defect
 
-Download the original UCF-EL-Defect dataset and its VGG Image Annotator (VIA) annotations:
+Download the original UCF-EL-Defect dataset and its annotations:
 
 https://github.com/ucf-photovoltaics/UCF-EL-Defect
 
