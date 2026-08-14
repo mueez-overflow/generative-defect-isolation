@@ -10,15 +10,16 @@ This repository accompanies the paper:
 > A. Mueez, Y. S. Rawat, S. Vyas — *Solar Energy* (2026)  
 > [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0038092X26006328) · [arXiv](https://arxiv.org/pdf/2608.12725)
 
+
 ### Data and reproducibility
 
-To support both **exact reproducibility** and **broader research reuse**, we provide two complementary data resources. The exact experiment split preserves the train/test setup used in the paper, while the generated-data release makes GDI outputs from both train and test source partitions available as a standalone resource for future work on synthetic-data augmentation, defect classification and photovoltaic EL analysis.
+To support both **broader research reuse** and **exact reproducibility**, we provide two complementary data resources. The generated-data release makes GDI outputs from both train and test source partitions available as a standalone resource for future work on synthetic-data augmentation, defect classification and photovoltaic EL analysis, while the exact experiment split preserves the train/test setup used in the paper.
 
-- **Exact data used in the paper:** [Google Drive — train/test split](https://drive.google.com/drive/folders/1Grwl55IqPvrFaZK4f7tlIi9u8ymuQO53?usp=sharing)  
-  The training split contains the original training images together with GDI-generated images; the test split contains **original images only**.
 - **Generated-data release:** [UCF-EL-GDI on Hugging Face](https://huggingface.co/datasets/mueez-overflow/UCF-EL-GDI/)  
-  This release contains GDI-generated images derived from source images in **both the train and test partitions used in this work**.
-- **Original dataset:** [ucf-photovoltaics/UCF-EL-Defect](https://github.com/ucf-photovoltaics/UCF-EL-Defect)
+  This release contains **GDI-generated images** derived from source images in both the train and test partitions used in this work.
+- **Exact data used in the paper:** [Google Drive — train/test split](https://drive.google.com/drive/folders/1Grwl55IqPvrFaZK4f7tlIi9u8ymuQO53?usp=sharing)  
+  The training split contains the **original training images together with GDI-generated images**; the test split contains original images only.
+- **Original dataset:** https://github.com/ucf-photovoltaics/UCF-EL-Defect
 
 Generative Defect Isolation (GDI) is an annotation-guided augmentation method for electroluminescence (EL) images of photovoltaic (PV) cells. Starting from a real image containing multiple co-occurring defects, GDI uses pixel-level defect annotations and **LaMa inpainting** to remove selected defects. This produces samples containing an isolated target defect while preserving the visual context of the original PV cell. GDI can also remove all annotated defects to generate a `No_Defect` sample.
 
